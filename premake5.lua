@@ -114,26 +114,26 @@ solution "ioquake3"
 	platforms { "x86", "x64" }
 	configurations { "Release", "Debug" }
 	defines { "_CRT_SECURE_NO_DEPRECATE" }
-	configuration "platforms:x86"
+	filter "platforms:x86"
 		architecture "x86"
-	configuration "platforms:x64"
+	filter "platforms:x64"
 		architecture "x64"
-	configuration "Debug"
+	filter "Debug"
 		optimize "Debug"
 		defines { "_DEBUG" }
 		symbols "On"
-	configuration "Release"
+	filter "Release"
 		optimize "Full"
 		defines "NDEBUG"
-	configuration { "Debug", "x86" }
+	filter { "Debug", "x86" }
 		targetdir(path.join(BUILD_PATH, "bin_x86_debug"))
-	configuration { "Release", "x86" }
+	filter { "Release", "x86" }
 		targetdir(path.join(BUILD_PATH, "bin_x86"))
-	configuration { "Debug", "x64" }
+	filter { "Debug", "x64" }
 		targetdir(path.join(BUILD_PATH, "bin_x64_debug"))
-	configuration { "Release", "x64" }
+	filter { "Release", "x64" }
 		targetdir(path.join(BUILD_PATH, "bin_x64"))
-	configuration "x64"
+	filter "x64"
 		defines { "_WIN64", "__WIN64__" }
 	
 group "engine"
@@ -142,13 +142,13 @@ if not _OPTIONS["disable-client"] then
 project "ioquake3"
 	kind "WindowedApp"
 	characterset "MBCS"
-	configuration "x64"
+	filter "x64"
 		targetname "ioquake3.x86_64"
 		defines "__x86_64__"
-	configuration "x86"
+	filter "x86"
 		targetname "ioquake3.x86"
 		defines "__i386__"
-	configuration {}
+	filter {}
 	defines
 	{
 		"_WIN32",
@@ -197,9 +197,9 @@ project "ioquake3"
 	{
 		["*"] = IOQ3_CODE_PATH
 	}
-	configuration "x64"
+	filter "x64"
 		files { path.join(IOQ3_CODE_PATH, "asm/vm_x86_64.asm") }
-	configuration {}
+	filter {}
 	excludes
 	{
 		path.join(IOQ3_CODE_PATH, "client/libmumblelink.*"),
@@ -249,11 +249,11 @@ project "ioquake3"
 		links { "ogg", "opus", "vorbis" }
 	end
 	linkoptions "/SAFESEH:NO" -- for MSVC2012
-	configuration { "x86", "**.asm" }
+	filter { "x86", "**.asm" }
 		buildmessage "Assembling..."
 		buildcommands('ml /c /Zi /Fo"%{cfg.objdir}/%{file.basename}.asm.obj" "%{file.relpath}"')
 		buildoutputs '%{cfg.objdir}/%{file.basename}.asm.obj'
-	configuration { "x64", "**.asm" }
+	filter { "x64", "**.asm" }
 		buildmessage "Assembling..."
 		buildcommands('ml64 /c /D idx64 /Zi /Fo"%{cfg.objdir}/%{file.basename}.asm.obj" "%{file.relpath}"')
 		buildoutputs '%{cfg.objdir}/%{file.basename}.asm.obj'
@@ -263,11 +263,11 @@ if not _OPTIONS["disable-server"] then
 project "ioq3ded"
 	kind "ConsoleApp"
 	characterset "MBCS"
-	configuration "x64"
+	filter "x64"
 		targetname "ioq3ded.x86_64"
-	configuration "x86"
+	filter "x86"
 		targetname "ioq3ded.x86"
-	configuration {}
+	filter {}
 	defines
 	{
 		"_WINSOCK_DEPRECATED_NO_WARNINGS",
@@ -310,9 +310,9 @@ project "ioq3ded"
 	{
 		["*"] = IOQ3_CODE_PATH
 	}
-	configuration "x64"
+	filter "x64"
 		files { path.join(IOQ3_CODE_PATH, "asm/vm_x86_64.asm") }
-	configuration {}
+	filter {}
 	excludes
 	{
 		path.join(IOQ3_CODE_PATH, "qcommon/vm_armv7l.c"),
@@ -332,11 +332,11 @@ project "ioq3ded"
 		"zlib"
 	}
 	linkoptions "/SAFESEH:NO" -- for MSVC2012
-	configuration { "x86", "**.asm" }
+	filter { "x86", "**.asm" }
 		buildmessage "Assembling..."
 		buildcommands('ml /c /Zi /Fo"%{cfg.objdir}/%{file.basename}.asm.obj" "%{file.relpath}"')
 		buildoutputs '%{cfg.objdir}/%{file.basename}.asm.obj'
-	configuration { "x64", "**.asm" }
+	filter { "x64", "**.asm" }
 		buildmessage "Assembling..."
 		buildcommands('ml64 /c /D idx64 /Zi /Fo"%{cfg.objdir}/%{file.basename}.asm.obj" "%{file.relpath}"')
 		buildoutputs '%{cfg.objdir}/%{file.basename}.asm.obj'
@@ -348,11 +348,11 @@ if not _OPTIONS["disable-renderer-gl1"] then
 project "renderer_opengl1"
 	kind "SharedLib"
 	characterset "MBCS"
-	configuration "x64"
+	filter "x64"
 		targetname "renderer_opengl1_x86_64"
-	configuration "x86"
+	filter "x86"
 		targetname "renderer_opengl1_x86"
-	configuration {}
+	filter {}
 	defines
 	{
 		"_WIN32",
@@ -400,7 +400,7 @@ project "renderer_opengl1"
 		"SDL2",
 		"zlib"
 	}
-	configuration "x64"
+	filter "x64"
 		buildoptions { "/wd\"4267\""} -- Silence size_t type conversion warnings
 end
 
@@ -408,11 +408,11 @@ if not _OPTIONS["disable-renderer-gl2"] then
 project "renderer_opengl2"
 	kind "SharedLib"
 	characterset "MBCS"
-	configuration "x64"
+	filter "x64"
 		targetname "renderer_opengl2_x86_64"
-	configuration "x86"
+	filter "x86"
 		targetname "renderer_opengl2_x86"
-	configuration {}
+	filter {}
 	defines
 	{
 		"_WIN32",
@@ -494,10 +494,10 @@ project "renderer_opengl2"
 		"SDL2",
 		"zlib"
 	}
-	configuration "x64"
+	filter "x64"
 		buildoptions { "/wd\"4267\""} -- Silence size_t type conversion warnings
-	configuration {}
-	configuration "**.glsl"
+	filter {}
+	filter "**.glsl"
 		buildmessage "Stringifying %{file.name}"
 		buildcommands("cscript.exe \"" .. path.join(IOQ3_PATH, "misc/msvc/glsl_stringify.vbs") .. "\" //Nologo \"%{file.relpath}\" \"dynamic\\renderergl2\\%{file.basename}.c\"")
 		buildoutputs(path.join(BUILD_PATH, "dynamic\\renderergl2\\%{file.basename}.c"))
@@ -515,19 +515,19 @@ function setupGameDllProject(mod, name)
 	if _OPTIONS["standalone"] then
 		defines "STANDALONE"
 	end
-	configuration { "Debug", "x86" }
+	filter { "Debug", "x86" }
 		targetdir(path.join(BUILD_PATH, "bin_x86_debug/" .. mod))
 		targetname(name .. "x86")
-	configuration { "Release", "x86" }
+	filter { "Release", "x86" }
 		targetdir(path.join(BUILD_PATH, "bin_x86/" .. mod))
 		targetname(name .. "x86")
-	configuration { "Debug", "x64" }
+	filter { "Debug", "x64" }
 		targetdir(path.join(BUILD_PATH, "bin_x64_debug/" .. mod))
 		targetname(name .. "x86_64")
-	configuration { "Release", "x64" }
+	filter { "Release", "x64" }
 		targetdir(path.join(BUILD_PATH, "bin_x64/" .. mod))
 		targetname(name .. "x86_64")
-	configuration {}
+	filter {}
 	links "winmm"
 end
 
@@ -652,11 +652,11 @@ function gameQvmProject(_mod, _qvm, _defines, _files, _asmFile)
 	kind "StaticLib"
 	files(_files)
 	links { "lcc", "q3asm", "q3cpp", "q3rcc" } -- build dependencies
-	configuration "**.c"
+	filter "**.c"
 		buildmessage "lcc %{file.name}"
 		buildcommands("\"%{cfg.targetdir}\\lcc.exe\" " .. _defines .. " -Wo-lccdir=\"%{cfg.targetdir}\" -o \"%{cfg.objdir}\\%{file.basename}.asm\" \"%{file.relpath}\"")
 		buildoutputs "%{cfg.objdir}\\%{file.basename}.asm"
-	configuration {}
+	filter {}
 	local asmFiles = ""
 	for _,v in pairs(_files) do
 		local ext = path.getextension(v)
@@ -1058,9 +1058,9 @@ project "SDL2"
 		"winmm"
 	}
 	-- msvcrt linker errors - VS bug?
-	configuration "Debug"
+	filter "Debug"
 		links { "ucrtd", "vcruntimed" }
-	configuration "Release"
+	filter "Release"
 		links { "ucrt" }
 
 project "SDL2main"
@@ -1141,7 +1141,7 @@ project "q3rcc"
 		"/wd\"4018\"", -- "signed/unsigned mismatch"
 		"/wd\"4244\"" -- "conversion from 'x' to 'y', possible loss of data"
 	}
-	configuration "**.md"
+	filter "**.md"
 		buildmessage "lburg %{file.basename}"
 		buildcommands("\"" .. path.join("%{cfg.targetdir}", "lburg.exe") .. "\" \"%{file.relpath}\" > \"dynamic\\%{file.basename}.c\"")
 		buildoutputs(path.join(BUILD_PATH, "dynamic\\%{file.basename}.c"))
